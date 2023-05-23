@@ -6,13 +6,13 @@
   .SliderRoot[data-orientation='horizontal'] { 
     width: 100%;
     height: 5px;
-    background-color: grey;
+    background-color: #E4E9EC;
   }
   
   .SliderTrack {
     position: relative;
     flex-grow: 1;
-    background-color: grey;
+    background-color: E4E9EC;
   }
   .SliderTrack[data-orientation='horizontal'] {
     width: 3px;
@@ -30,6 +30,7 @@
     display: block;
     width: 20px;
     height: 20px;
-    background-color: black;
+    background-color: white;
     border-radius: 50%;
+    border: 1px solid var(--main-color);
   }

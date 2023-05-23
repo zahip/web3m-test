@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 
 import MultiSelectDropbox from "@/components/shared/MultiSelectDropbox/MultiSelectDropbox";
 import ItemDetails from "@/components/ItemDetails/ItemDetails";
+import Dialog from "@/components/shared/Dialog/Dialog";
+import Button from "@/components/shared/Button/Button";
+
+import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
+import { isObjectEmpty } from "@/utils/isObjectEmpty";
+
+import useFetch from "@/hooks/useFetch";
 
 import styles from "@/styles/Home.module.scss";
-import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
-import Dialog from "@/components/shared/Dialog/Dialog";
-import { isObjectEmpty } from "@/utils/isObjectEmpty";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,37 +29,35 @@ const items = [
 export default function Home() {
   const [itemsList, setItemsList] = useState(items);
   const [selectedList, setSelectedList] = useState({});
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
 
+  const { handleFetch, loading } = useFetch();
+
+  const filteredItemList = useMemo(
+    () => Object.values(selectedList).filter((item) => item.quantity > 0),
+    [selectedList]
+  );
+
   const handleClickDropboxItem = async (itemObj) => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/products/${itemObj.name.toLowerCase()}`
-      );
-      const data = await response.json();
-
-      setLoading(false);
-
-      if (data.error) {
-        setDialogMessage(data.error);
+    const data = await handleFetch(
+      `${process.env.NEXT_PUBLIC_API}/${itemObj.name.toLowerCase()}`
+    );
+    console.log(data);
+    if (data.error) {
+      setDialogMessage(data.error);
+    } else {
+      if (data.stock === 0) {
+        setDialogMessage(`Sorry, ${data.name} not in stock`);
       } else {
-        if (data.stock === 0) {
-          setDialogMessage(`Sorry, ${data.name} not in stock`);
-        } else {
-          setItemsList((prevItemList) =>
-            prevItemList.filter((item) => item.id !== itemObj.id)
-          );
-          setSelectedList((prevSelectedList) => ({
-            ...prevSelectedList,
-            [data.id]: { ...data, quantity: 0 },
-          }));
-        }
+        setItemsList((prevItemList) =>
+          prevItemList.filter((item) => item.id !== itemObj.id)
+        );
+        setSelectedList((prevSelectedList) => ({
+          ...prevSelectedList,
+          [data.id]: { ...data, quantity: 0 },
+        }));
       }
-    } catch (error) {
-      setLoading(false);
-      console.log("error", error);
     }
   };
 
@@ -63,6 +65,20 @@ export default function Home() {
     const dictionaryAfterDelete = deleteFromDictionary(item.id, selectedList);
     setSelectedList(dictionaryAfterDelete);
     setItemsList((prevItemList) => [...prevItemList, item]);
+  };
+
+  const handleSubmit = async () => {
+    const body = filteredItemList.map((item) => ({
+      id: item.id,
+      amount: item.quantity,
+    }));
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    };
+    const data = await handleFetch(process.env.NEXT_PUBLIC_API, requestOptions);
+    setDialogMessage(data.message);
   };
 
   return (
@@ -95,6 +111,35 @@ export default function Home() {
               ))}
             </div>
             <hr className="solid" />
+            <div className={styles["section-title"]}>Item list:</div>
+            <ul>
+              {filteredItemList.map(({ id, name, quantity }) => (
+                <li className={styles["list-item-row"]} key={id}>
+                  <span>{name}</span>
+                  <span className={styles["dashed-container"]}>
+                    <hr className="dashed" />
+                  </span>
+                  <span>{quantity}KG</span>
+                </li>
+              ))}
+            </ul>
+            <div>
+              <div className={styles["section-title"]}>Total price: </div>
+              <div>
+                <span>$</span>
+                <span>
+                  {filteredItemList.reduce(
+                    (acc, currentVal) =>
+                      acc + currentVal.price * currentVal.quantity,
+                    0
+                  )}
+                </span>
+              </div>
+            </div>
+
+            <div className={styles["btn-container"]}>
+              <Button onClick={handleSubmit}>Submit</Button>
+            </div>
           </>
         )}
 
