@@ -38,7 +38,6 @@ export default function Home() {
       setLoading(false);
 
       if (data.error) {
-        console.log(data.error);
         setDialogMessage(data.error);
       } else {
         if (data.stock === 0) {
