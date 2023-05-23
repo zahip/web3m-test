@@ -7,6 +7,7 @@ import ItemDetails from "@/components/ItemDetails/ItemDetails";
 
 import styles from "@/styles/Home.module.scss";
 import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
+import Dialog from "@/components/shared/Dialog/Dialog";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function Home() {
   const [itemsList, setItemsList] = useState(items);
   const [selectedList, setSelectedList] = useState({});
   const [loading, setLoading] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
 
   const handleClickDropboxItem = async (itemObj) => {
     try {
@@ -38,13 +40,17 @@ export default function Home() {
       if (data.error) {
         console.log(data.error);
       } else {
-        setItemsList((prevItemList) =>
-          prevItemList.filter((item) => item.id !== itemObj.id)
-        );
-        setSelectedList((prevSelectedList) => ({
-          ...prevSelectedList,
-          [data.id]: { ...data },
-        }));
+        if (data.stock === 0) {
+          setDialogMessage(`Sorry, ${data.name} not in stock`);
+        } else {
+          setItemsList((prevItemList) =>
+            prevItemList.filter((item) => item.id !== itemObj.id)
+          );
+          setSelectedList((prevSelectedList) => ({
+            ...prevSelectedList,
+            [data.id]: { ...data },
+          }));
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -83,6 +89,11 @@ export default function Home() {
             />
           ))}
         </div>
+        <Dialog
+          open={dialogMessage}
+          title={dialogMessage}
+          setOpenDialog={() => setDialogMessage("")}
+        />
       </main>
     </>
   );
