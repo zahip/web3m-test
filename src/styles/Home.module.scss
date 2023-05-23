@@ -7,10 +7,12 @@
 }
 
 .items-list-card-container {
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-gap: 30px; 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 5rem;
+  padding-bottom: 5rem;
 
   @media (max-width: 760px) {
     grid-template-columns: auto;

@@ -7,7 +7,7 @@ import Card from "../shared/Card/Card";
 import styles from "./ItemDetails.module.scss";
 
 function ItemDetails({ item, handleClick, setSelectedList }) {
-  const { name, color, quantity, stock, id } = item;
+  const { name, color, quantity, stock, price, id } = item;
 
   const handleChange = (num) => {
     if (num <= stock) {
@@ -18,40 +18,46 @@ function ItemDetails({ item, handleClick, setSelectedList }) {
     }
   };
   return (
-    <div className={styles["item-details-container"]}>
+    <div className={styles["item-details"]}>
       <Card>
-        <div className={styles["item-details-top"]}>
-          <div
-            className={styles["title-wrapper"]}
-            style={{ backgroundColor: color }}
-          >
-            <span>{name}</span>
+        <div className={styles["item-details-container"]}>
+          <div className={styles["item-details-top"]}>
+            <div
+              className={styles["title-wrapper"]}
+              style={{ backgroundColor: color }}
+            >
+              <span>{name}</span>
+            </div>
+            <span
+              className={styles["remove-btn"]}
+              onClick={() => handleClick(item)}
+            >
+              <XCircleIcon aria-hidden="true" />
+            </span>
           </div>
-          <span
-            className={styles["remove-btn"]}
-            onClick={() => handleClick(item)}
-          >
-            <XCircleIcon aria-hidden="true" />
-          </span>
-        </div>
-        <div className={styles["item-details-middle"]}>
-          <div className={styles["quantity-container"]}>
-            <span>Select quantity</span>
-            <div className={styles["input-container"]}>
-              <input
+          <div className={styles["item-details-middle"]}>
+            <div className={styles["quantity-container"]}>
+              <span>Select quantity</span>
+              <div className={styles["input-container"]}>
+                <input
+                  value={quantity}
+                  onChange={(e) => handleChange(+e.target.value)}
+                />
+                <span> KG</span>
+              </div>
+            </div>
+
+            <div className={styles["slider-container"]}>
+              <Slider
+                maxRange={stock}
                 value={quantity}
-                onChange={(e) => handleChange(+e.target.value)}
+                handleChange={(num) => handleChange(num[0])}
               />
-              <span> KG</span>
             </div>
           </div>
-
-          <div className={styles["slider-container"]}>
-            <Slider
-              maxRange={stock}
-              value={quantity}
-              handleChange={(num) => handleChange(num[0])}
-            />
+          <div className={styles["item-details-bottom"]}>
+            <span>Price:</span>
+            <span className={styles["price-value"]}>${quantity * price}</span>
           </div>
         </div>
       </Card>

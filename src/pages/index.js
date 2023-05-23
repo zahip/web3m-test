@@ -8,6 +8,7 @@ import ItemDetails from "@/components/ItemDetails/ItemDetails";
 import styles from "@/styles/Home.module.scss";
 import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
 import Dialog from "@/components/shared/Dialog/Dialog";
+import { isObjectEmpty } from "@/utils/isObjectEmpty";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -80,16 +81,23 @@ export default function Home() {
         />
 
         {loading && <div>loading...</div>}
-        <div className={styles["items-list-card-container"]}>
-          {Object.values(selectedList).map((item) => (
-            <ItemDetails
-              key={item.id}
-              item={item}
-              handleClick={handleRemoveCardItem}
-              setSelectedList={setSelectedList}
-            />
-          ))}
-        </div>
+
+        {!isObjectEmpty(selectedList) && (
+          <>
+            <div className={styles["items-list-card-container"]}>
+              {Object.values(selectedList).map((item) => (
+                <ItemDetails
+                  key={item.id}
+                  item={item}
+                  handleClick={handleRemoveCardItem}
+                  setSelectedList={setSelectedList}
+                />
+              ))}
+            </div>
+            <hr className="solid" />
+          </>
+        )}
+
         <Dialog
           open={dialogMessage}
           title={dialogMessage}
