@@ -4,15 +4,20 @@
   padding: 6rem;
   min-height: 100vh;
   max-width: 50rem;
+  margin: 0 auto;
 }
 
 .items-list-card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 12px;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: space-between;
+  // gap: 12px;
   margin-top: 5rem;
   padding-bottom: 5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 12px;
 
   @media (max-width: 760px) {
     grid-template-columns: auto;

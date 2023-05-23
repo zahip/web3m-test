@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCarrot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import styles from "./MultiSelectDropbox.module.scss";
 
 export default function MultiSelectDropbox({
@@ -52,7 +52,7 @@ export default function MultiSelectDropbox({
                           <hr className="dashed" />
                         </span>
                         <span className={styles["icon-container"]}>
-                          {/* <FontAwesomeIcon icon={faCarrot} /> */}
+                          <FontAwesomeIcon icon={item.icon} />
                         </span>
                       </div>
                     </Listbox.Option>

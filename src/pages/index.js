@@ -10,6 +10,16 @@ import Button from "@/components/shared/Button/Button";
 import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
 import { isObjectEmpty } from "@/utils/isObjectEmpty";
 
+import {
+  faLemon,
+  faAppleAlt,
+  faCarrot,
+  fa0,
+  fa1,
+  fa2,
+  fa3,
+} from "@fortawesome/free-solid-svg-icons";
+
 import useFetch from "@/hooks/useFetch";
 
 import styles from "@/styles/Home.module.scss";
@@ -17,19 +27,18 @@ import styles from "@/styles/Home.module.scss";
 const inter = Inter({ subsets: ["latin"] });
 
 const items = [
-  { id: 1, name: "Apple" },
-  { id: 2, name: "Carrot" },
-  { id: 3, name: "Melone" },
-  { id: 4, name: "Pear" },
-  { id: 5, name: "Lemon" },
-  { id: 6, name: "Orange" },
-  { id: 7, name: "Salad" },
+  { id: 1, name: "Apple", icon: faAppleAlt },
+  { id: 2, name: "Carrot", icon: faCarrot },
+  { id: 3, name: "Melone", icon: fa0 },
+  { id: 4, name: "Pear", icon: fa1 },
+  { id: 5, name: "Lemon", icon: faLemon },
+  { id: 6, name: "Orange", icon: fa2 },
+  { id: 7, name: "Salad", icon: fa3 },
 ];
 
 export default function Home() {
   const [itemsList, setItemsList] = useState(items);
   const [selectedList, setSelectedList] = useState({});
-  // const [loading, setLoading] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
 
   const { handleFetch, loading } = useFetch();
@@ -43,7 +52,6 @@ export default function Home() {
     const data = await handleFetch(
       `${process.env.NEXT_PUBLIC_API}/${itemObj.name.toLowerCase()}`
     );
-    console.log(data);
     if (data.error) {
       setDialogMessage(data.error);
     } else {
@@ -55,7 +63,7 @@ export default function Home() {
         );
         setSelectedList((prevSelectedList) => ({
           ...prevSelectedList,
-          [data.id]: { ...data, quantity: 0 },
+          [data.id]: { ...data, quantity: 0, icon: itemObj.icon },
         }));
       }
     }

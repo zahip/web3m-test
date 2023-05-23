@@ -5,9 +5,10 @@ import Slider from "../shared/Slider/Slider";
 import Card from "../shared/Card/Card";
 
 import styles from "./ItemDetails.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ItemDetails({ item, handleClick, setSelectedList }) {
-  const { name, color, quantity, stock, price, id } = item;
+  const { name, color, quantity, stock, price, icon, id } = item;
 
   const handleChange = (num) => {
     if (num <= stock) {
@@ -18,7 +19,7 @@ function ItemDetails({ item, handleClick, setSelectedList }) {
     }
   };
   return (
-    <div className={styles["item-details"]}>
+    <>
       <Card>
         <div className={styles["item-details-container"]}>
           <div className={styles["item-details-top"]}>
@@ -26,6 +27,9 @@ function ItemDetails({ item, handleClick, setSelectedList }) {
               className={styles["title-wrapper"]}
               style={{ backgroundColor: color }}
             >
+              <span className={styles["icon-container"]}>
+                <FontAwesomeIcon icon={icon} />
+              </span>
               <span>{name}</span>
             </div>
             <span
@@ -61,7 +65,7 @@ function ItemDetails({ item, handleClick, setSelectedList }) {
           </div>
         </div>
       </Card>
-    </div>
+    </>
   );
 }
 
