@@ -6,6 +6,7 @@ import MultiSelectDropbox from "@/components/shared/MultiSelectDropbox/MultiSele
 import ItemDetails from "@/components/ItemDetails/ItemDetails";
 
 import styles from "@/styles/Home.module.scss";
+import { deleteFromDictionary } from "@/utils/deleteFromDictionary";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,20 +26,36 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const handleClickDropboxItem = async (itemObj) => {
-    setLoading(true);
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/products/${itemObj.name.toLowerCase()}`
-    );
-    const data = await response.json();
-    setLoading(false);
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API}/products/${itemObj.name.toLowerCase()}`
+      );
+      const data = await response.json();
 
-    setItemsList((prevItemList) =>
-      prevItemList.filter((item) => item.id !== itemObj.id)
-    );
-    setSelectedList((prevSelectedList) => ({
-      ...prevSelectedList,
-      [data.id]: { ...data },
-    }));
+      setLoading(false);
+
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setItemsList((prevItemList) =>
+          prevItemList.filter((item) => item.id !== itemObj.id)
+        );
+        setSelectedList((prevSelectedList) => ({
+          ...prevSelectedList,
+          [data.id]: { ...data },
+        }));
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log("error", error);
+    }
+  };
+
+  const handleRemoveCardItem = (item) => {
+    const dictionaryAfterDelete = deleteFromDictionary(item.id, selectedList);
+    setSelectedList(dictionaryAfterDelete);
+    setItemsList((prevItemList) => [...prevItemList, item]);
   };
 
   return (
@@ -59,7 +76,11 @@ export default function Home() {
         {loading && <div>loading...</div>}
         <div className={styles["items-list-card-container"]}>
           {Object.values(selectedList).map((item) => (
-            <ItemDetails key={item.id} item={item} />
+            <ItemDetails
+              key={item.id}
+              item={item}
+              handleClick={handleRemoveCardItem}
+            />
           ))}
         </div>
       </main>

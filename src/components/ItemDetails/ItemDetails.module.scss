@@ -2,15 +2,21 @@
     padding-bottom: 5rem;
 }
 
-.frtuies-item-top {
+.item-details-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 3rem;
     gap: 5px;
+
+    .remove-btn {
+        background: grey;
+        height: 100%;
+        flex-basis: 15%;
+        display: flex;
+        border-radius: 5px;
+    }
 }
-
-
 
 .title-wrapper {
     flex-basis: 85%;
@@ -20,40 +26,4 @@
     border-radius: 10px;
 }
 
-.remove-btn {
-    background: grey;
-    height: 100%;
-    flex-basis: 15%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-}
-
-.quantity-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.input-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    input {
-        width: 30px;
-        height: 30px;
-        text-align: center;
-    }
-}
-
-.slider-container {
-    margin-top: 10px;
-}
-
-.price-container {
-    margin-top: 10px;
-}
 
