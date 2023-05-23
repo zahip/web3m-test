@@ -1,8 +1,7 @@
-// index.jsx
 import * as Slider from "@radix-ui/react-slider";
-import styles from "./Slider.module.scss";
+import styles from "./SliderSelectorBar.module.scss";
 
-export default ({ maxRange, handleChange, value }) => {
+const SliderSelectorBar = ({ maxRange, handleChange, value }) => {
   return (
     <Slider.Root
       className={styles["SliderRoot"]}
@@ -20,3 +19,5 @@ export default ({ maxRange, handleChange, value }) => {
     </Slider.Root>
   );
 };
+
+export default SliderSelectorBar;

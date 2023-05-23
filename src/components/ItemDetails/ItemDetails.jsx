@@ -1,6 +1,6 @@
 import React from "react";
 import { XCircleIcon } from "@heroicons/react/24/outline";
-import Slider from "../shared/Slider/Slider";
+import SliderSelectorBar from "../shared/SliderSelectorBar/SliderSelectorBar";
 
 import Card from "../shared/Card/Card";
 
@@ -52,7 +52,7 @@ function ItemDetails({ item, handleClick, setSelectedList }) {
             </div>
 
             <div className={styles["slider-container"]}>
-              <Slider
+              <SliderSelectorBar
                 maxRange={stock}
                 value={quantity}
                 handleChange={(num) => handleChange(num[0])}
