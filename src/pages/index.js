@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 
 import MultiSelectDropbox from "@/components/shared/MultiSelectDropbox/MultiSelectDropbox";
+import ItemDetails from "@/components/ItemDetails/ItemDetails";
 
 import styles from "@/styles/Home.module.scss";
 
@@ -20,11 +21,24 @@ const items = [
 
 export default function Home() {
   const [itemsList, setItemsList] = useState(items);
+  const [selectedList, setSelectedList] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const handleClickDropboxItem = (itemObj) => {
+  const handleClickDropboxItem = async (itemObj) => {
+    setLoading(true);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API}/products/${itemObj.name.toLowerCase()}`
+    );
+    const data = await response.json();
+    setLoading(false);
+
     setItemsList((prevItemList) =>
       prevItemList.filter((item) => item.id !== itemObj.id)
     );
+    setSelectedList((prevSelectedList) => ({
+      ...prevSelectedList,
+      [data.id]: { ...data },
+    }));
   };
 
   return (
@@ -41,6 +55,13 @@ export default function Home() {
           placeholderText="Select to add item to basket"
           handleClick={handleClickDropboxItem}
         />
+
+        {loading && <div>loading...</div>}
+        <div className={styles["items-list-card-container"]}>
+          {Object.values(selectedList).map((item) => (
+            <ItemDetails key={item.id} item={item} />
+          ))}
+        </div>
       </main>
     </>
   );
