@@ -26,6 +26,14 @@ a {
   text-decoration: none;
 }
 
+hr.solid {
+  border-top: 3px solid #bbb;
+}
+
+hr.dashed {
+  border-top: 3px dashed #bbb;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
