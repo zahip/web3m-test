@@ -39,6 +39,7 @@ export default function Home() {
 
       if (data.error) {
         console.log(data.error);
+        setDialogMessage(data.error);
       } else {
         if (data.stock === 0) {
           setDialogMessage(`Sorry, ${data.name} not in stock`);
