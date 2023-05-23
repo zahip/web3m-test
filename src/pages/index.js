@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 
@@ -69,11 +69,14 @@ export default function Home() {
     }
   };
 
-  const handleRemoveCardItem = (item) => {
-    const dictionaryAfterDelete = deleteFromDictionary(item.id, selectedList);
-    setSelectedList(dictionaryAfterDelete);
-    setItemsList((prevItemList) => [...prevItemList, item]);
-  };
+  const handleRemoveCardItem = useCallback(
+    (item) => {
+      const dictionaryAfterDelete = deleteFromDictionary(item.id, selectedList);
+      setSelectedList(dictionaryAfterDelete);
+      setItemsList((prevItemList) => [...prevItemList, item]);
+    },
+    [selectedList]
+  );
 
   const handleSubmit = async () => {
     const body = filteredItemList.map((item) => ({
