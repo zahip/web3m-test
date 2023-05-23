@@ -48,7 +48,7 @@ export default function Home() {
           );
           setSelectedList((prevSelectedList) => ({
             ...prevSelectedList,
-            [data.id]: { ...data },
+            [data.id]: { ...data, quantity: 0 },
           }));
         }
       }
@@ -86,6 +86,7 @@ export default function Home() {
               key={item.id}
               item={item}
               handleClick={handleRemoveCardItem}
+              setSelectedList={setSelectedList}
             />
           ))}
         </div>

@@ -12,6 +12,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
     "@radix-ui/react-alert-dialog": "^1.0.3",
+    "@radix-ui/react-slider": "^1.1.1",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "next": "13.4.3",

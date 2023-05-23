@@ -1,9 +1,18 @@
 .main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   padding: 6rem;
   min-height: 100vh;
   max-width: 50rem;
+}
+
+.items-list-card-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 30px; 
+  margin-top: 5rem;
+
+  @media (max-width: 760px) {
+    grid-template-columns: auto;
+  }
 }
